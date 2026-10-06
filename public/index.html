@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Secure API key management, real usage monitoring, and provider cost visibility." />
+  <meta name="theme-color" content="#0b0d10" />
+  <meta property="og:title" content="API Control Center" />
+  <meta property="og:description" content="Secure API key management and usage monitoring." />
+  <title>API Control Center</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="API Control Center home"><span class="brand-mark">◆</span><span>API Control<br />Center</span></a>
+      <nav>
+        <button class="nav-item active" data-view="home"><span>⌂</span>Overview</button>
+        <button class="nav-item" data-view="keys"><span>⌘</span>API Keys</button>
+        <button class="nav-item" data-view="usage"><span>⌁</span>Usage analytics</button>
+        <button class="nav-item" data-view="providers"><span>◌</span>Providers</button>
+        <button class="nav-item" data-view="audit"><span>▤</span>Audit log</button>
+        <button class="nav-item" data-view="console"><span>›_</span>Try-it console</button>
+      </nav>
+      <section class="sidebar-bottom">
+        <div class="system-status"><span class="status-dot"></span><div><strong>System health</strong><small id="health-text">Checking services…</small></div></div>
+        <div class="simulation-note"><span>SIMULATION LAB</span><p>Requires a private, pinned MiroFish engine.</p><button id="simulation-status">View status</button></div>
+      </section>
+    </aside>
+    <main>
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Open navigation">☰</button>
+        <label class="search"><span>⌕</span><input id="search" placeholder="Search keys, providers, or activity" /></label>
+        <div class="top-actions"><button class="icon-button" id="theme-toggle" title="Toggle theme" aria-label="Toggle color theme">◐</button><button class="avatar" aria-label="Signed in as local demo user">JD</button></div>
+      </header>
+      <div class="content">
+        <section class="view active" id="view-home">
+          <div class="page-heading"><div><p class="eyebrow">CONTROL PLANE</p><h1>Operational clarity for every API key.</h1><p>Manage access, investigate usage, and keep provider data honest.</p></div><button class="primary-button" data-open-create>+ Create API key</button></div>
+          <div class="metrics" id="metrics"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+          <div class="dashboard-grid">
+            <section class="panel usage-panel"><div class="panel-heading"><div><h2>Request activity</h2><p>Verified events from the local database</p></div><span class="source-label">DATABASE</span></div><div class="chart-wrap"><div class="y-axis"><span>Requests</span><span>Actual events</span></div><svg class="usage-chart" id="usage-chart" viewBox="0 0 620 220" preserveAspectRatio="none" aria-label="Request activity chart" role="img"></svg></div><div class="chart-days" id="chart-days"></div></section>
+            <section class="panel provider-panel"><div class="panel-heading"><div><h2>Provider monitoring</h2><p>Credential and budget status</p></div><button class="text-button" data-view-link="providers">View all</button></div><div id="provider-summary" class="provider-summary"></div></section>
+          </div>
+          <div class="lower-grid">
+            <section class="panel key-panel"><div class="panel-heading"><div><h2>Your API keys</h2><p>Secrets are never displayed again.</p></div><button class="text-button" data-view-link="keys">View all</button></div><div class="table-scroll"><table><thead><tr><th>Name</th><th>Environment</th><th>Scopes</th><th>Rate</th><th>Status</th><th></th></tr></thead><tbody id="key-preview"></tbody></table></div></section>
+            <section class="panel activity-panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Security-relevant lifecycle events</p></div><button class="text-button" data-view-link="audit">View all</button></div><ol class="activity-list" id="activity-list"></ol></section>
+          </div>
+        </section>
+        <section class="view" id="view-keys"><div class="page-heading"><div><p class="eyebrow">KEY INVENTORY</p><h1>API keys</h1><p>Create scoped credentials and control their lifecycle.</p></div><button class="primary-button" data-open-create>+ Create API key</button></div><div class="panel"><div class="toolbar"><label class="table-search">⌕ <input id="key-search" placeholder="Filter by name or prefix" /></label><select id="key-status-filter" aria-label="Filter keys by status"><option value="">All statuses</option><option value="active">Active</option><option value="rotating">Rotating</option><option value="revoked">Revoked</option><option value="expired">Expired</option></select></div><div class="table-scroll"><table><thead><tr><th>Name</th><th>Masked credential</th><th>Environment</th><th>Rate limit</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead><tbody id="key-table"></tbody></table></div><div class="empty-state hidden" id="keys-empty"><strong>No matching keys</strong><p>Create a key or adjust the filters.</p></div></div></section>
+        <section class="view" id="view-usage"><div class="page-heading"><div><p class="eyebrow">ANALYTICS</p><h1>Usage analytics</h1><p>Charts only represent recorded protected-endpoint calls.</p></div></div><div class="panel empty-state"><strong>No reporting period selected</strong><p>Send requests through the Try-it Console to create real usage events, then return here.</p><button class="secondary-button" data-view-link="console">Open Try-it Console</button></div></section>
+        <section class="view" id="view-providers"><div class="page-heading"><div><p class="eyebrow">PROVIDER COST CENTER</p><h1>Provider monitoring</h1><p>Values are classified by their origin—never inferred as provider facts.</p></div></div><div class="provider-cards" id="provider-cards"></div></section>
+        <section class="view" id="view-audit"><div class="page-heading"><div><p class="eyebrow">AUDIT TRAIL</p><h1>Audit log</h1><p>Secrets and full keys are deliberately excluded from all events.</p></div></div><section class="panel"><div class="table-scroll"><table><thead><tr><th>Time</th><th>Event</th><th>Resource</th><th>Details</th></tr></thead><tbody id="audit-table"></tbody></table></div><div class="empty-state hidden" id="audit-empty"><strong>No audit events yet</strong></div></section></section>
+        <section class="view" id="view-console"><div class="page-heading"><div><p class="eyebrow">PROTECTED ENDPOINT</p><h1>Try-it Console</h1><p>Issue a real request to the backend with a one-time key you control.</p></div></div><div class="console-layout"><section class="panel console-panel"><div class="request-line"><select id="method" aria-label="HTTP method"><option>GET</option></select><code>/api/demo/data</code></div><label>API key<input id="console-key" autocomplete="off" spellcheck="false" placeholder="Paste a key shown at creation" /></label><p class="field-help">The entered key is sent only to this app’s protected endpoint. It is never stored in the browser.</p><button class="primary-button" id="send-request">Send request</button></section><section class="panel response-panel"><div class="panel-heading"><div><h2>Response</h2><p id="response-status">Awaiting request</p></div></div><pre id="response-output">{}</pre></section></div></section>
+      </div>
+      <footer>API Control Center · Local demonstration <span>Privacy policy <em>Draft, needs legal review</em></span><span>Terms <em>Draft, needs legal review</em></span></footer>
+    </main>
+  </div>
+  <dialog id="create-dialog"><form method="dialog" id="create-form"><header><div><p class="eyebrow">NEW CREDENTIAL</p><h2>Create API key</h2></div><button type="button" class="close-button" data-close-dialog="create-dialog" aria-label="Close">×</button></header><p class="dialog-intro">Set the access policy before generating a secret. You’ll see the full key exactly once.</p><div class="form-grid"><label>Key name<input name="name" required minlength="2" maxlength="70" placeholder="e.g. Production service" /></label><label>Environment<select name="environment"><option value="development">Development</option><option value="staging">Staging</option><option value="production">Production</option></select></label><label>Rate limit / minute<input name="rateLimit" type="number" min="1" max="10000" value="100" required /></label><label>Quota (optional)<input name="quotaLimit" type="number" min="1" placeholder="Unlimited" /></label><label>Expires at (optional)<input name="expiresAt" type="datetime-local" /></label><label>Description (optional)<input name="description" maxlength="240" placeholder="What this key powers" /></label></div><fieldset><legend>Scopes</legend><div class="scope-grid"><label><input type="checkbox" name="scope" value="read" checked /> Read</label><label><input type="checkbox" name="scope" value="write" /> Write</label><label><input type="checkbox" name="scope" value="demo:read" checked /> Demo access</label><label><input type="checkbox" name="scope" value="analytics:read" /> Analytics</label></div></fieldset><p class="form-error" id="create-error"></p><menu><button type="button" class="secondary-button" data-close-dialog="create-dialog">Cancel</button><button class="primary-button" id="create-submit" value="default">Generate secure key</button></menu></form></dialog>
+  <dialog id="secret-dialog"><div class="secret-content"><span class="secret-icon">✓</span><p class="eyebrow">KEY CREATED</p><h2>Copy this secret now.</h2><p>This is the only time the full key can be displayed. Store it in a secure secret manager.</p><div class="secret-box"><code id="secret-value"></code><button id="copy-secret">Copy</button></div><p class="form-error" id="copy-feedback"></p><button class="primary-button full-width" id="secret-done">I’ve stored it securely</button></div></dialog>
+  <dialog id="rotate-dialog"><form method="dialog" id="rotate-form"><header><div><p class="eyebrow">SMART ROTATION</p><h2>Rotate key</h2></div><button type="button" class="close-button" data-close-dialog="rotate-dialog" aria-label="Close">×</button></header><p id="rotate-description"></p><label>Grace period<select name="graceDays"><option value="7">7 days</option><option value="3">3 days</option><option value="14">14 days</option><option value="30">30 days</option></select></label><p class="field-help">The old key stays usable until the grace period ends, then becomes expired.</p><p class="form-error" id="rotate-error"></p><menu><button type="button" class="secondary-button" data-close-dialog="rotate-dialog">Cancel</button><button class="primary-button" value="default">Rotate key</button></menu></form></dialog>
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

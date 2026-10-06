@@ -1,0 +1,13 @@
+{
+  "name": "api-control-center",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node server.js --migrate",
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=22.5.0" }
+}
